@@ -1,5 +1,117 @@
 # Rails Api for Ember Application w/ Authentication
 
+Rails API for an art collection (to be used as a photo album or image gallery).
+
+## API Structure
+
+### Models
+
+> User Model
+>  include Authentication
+>  has_many :collections
+>  has_many :arts, through: :collections
+>
+>  validates :username, :email, :password_digest, uniqueness: true
+>  validates :bio, length: { maximum: 500,
+>    too_long: "%{count} characters is the maximum allowed" }
+
+> Collection Model
+>  has_many :arts
+>  belongs_to :user
+>
+>  validates :image, presence: true
+>  validates :desc, length: { maximum: 1000,
+>    too_long: "%{count} characters is the maximum allowed" }
+
+> Art Model
+>  belongs_to :collection
+>  belongs_to :user, through: :collections
+>
+>  validates :image, presence: true
+>  validates :caption, length: { maximum: 250,
+>    too_long: "%{count} characters is the maximum allowed" }
+
+### DB Tables
+
+users table
+
+```Ruby
+  t.string :email, null: false, index: { unique: true }
+  t.string :token, null: false, index: { unique: true }
+  t.string :password_digest, null: false
+
+  t.string :username, index: { unique: true }
+  t.string :first_name
+  t.string :last_name
+  t.text :bio
+  t.string :image
+
+  t.timestamps null: false
+```
+
+collections table
+
+```Ruby
+  t.string :name
+  t.text :desc
+  t.string :image
+
+  t.references :user
+
+  t.timestamps
+```
+
+arts table
+
+```Ruby
+
+  t.string :title
+  t.text :caption
+  t.string :image
+
+  t.references :collection
+
+  t.timestamps
+```
+
+### Routes
+
+#### Authentication
+
+| Verb   | URI Pattern            | Controller#Action |
+|--------|------------------------|-------------------|
+| POST   | `/sign-up`             | `users#signup`    |
+| POST   | `/sign-in`             | `users#signin`    |
+| PATCH  | `/change-password/:id` | `users#changepw`  |
+| DELETE | `/sign-out/:id`        | `users#signout`   |
+
+#### Users
+
+| Verb | URI Pattern | Controller#Action |
+|------|-------------|-------------------|
+| GET  | `/users`    | `users#index`     |
+| GET  | `/users/1`  | `users#show`      |
+
+#### Collections
+
+| Verb   | URI Pattern        | Controller#Action     | Description             |
+|--------|--------------------|-----------------------|-------------------------|
+| GET    | `/collections`     | `collections#index`   | (R) display list of all |
+| POST   | `/collections`     | `collections#create`  | Create new              |
+| GET    | `/collections/:id` | `collections#show`    | (R) display specific    |
+| PATCH  | `/collections/:id` | `collections#update`  | Update specific         |
+| DELETE | `/collections/:id` | `collections#destroy` | Delete specific         |
+
+#### Arts
+
+| Verb   | URI Pattern | Controller#Action | Description             |
+|--------|-------------|-------------------|-------------------------|
+| GET    | `/arts`     | `arts#index`      | (R) display list of all |
+| POST   | `/arts`     | `arts#create`     | Create new              |
+| GET    | `/arts/:id` | `arts#show`       | (R) display specific    |
+| PATCH  | `/arts/:id` | `arts#update`     | Update specific         |
+| DELETE | `/arts/:id` | `arts#destroy`    | Delete specific         |
+
 ## Dependencies
 
 Install with `bundle install`.
@@ -13,16 +125,8 @@ Install with `bundle install`.
 ## Installation
 
 1.  Install dependencies with `bundle install`.
-1.  Setup your database with `bin/rake db:nuke_pave` or `bundle exec rake
-    db:nuke_pave`.
+1.  Setup database w/ `bin/rake db:nuke_pave` or `bundle exec rake db:nuke_pave`
 1.  Run the API server with `bin/rails server` or `bundle exec rails server`.
-
-## Structure
-
-`curl` command scripts are stored in [`scripts`](scripts) with names that
-correspond to API actions.
-
-User authentication is built-in.
 
 ## Tasks to run often
 
@@ -43,14 +147,12 @@ Scripts are included in [`scripts`](scripts) to test built-in actions.
 Add your own scripts to test your custom API.
 As an alternative, you can write automated tests in RSpec to test your API.
 
-### Authentication
+### CURL
 
-| Verb   | URI Pattern            | Controller#Action |
-|--------|------------------------|-------------------|
-| POST   | `/sign-up`             | `users#signup`    |
-| POST   | `/sign-in`             | `users#signin`    |
-| PATCH  | `/change-password/:id` | `users#changepw`  |
-| DELETE | `/sign-out/:id`        | `users#signout`   |
+`curl` command scripts are stored in [`scripts`](scripts) with names that
+correspond to API actions.
+
+User authentication is built-in.
 
 #### POST /sign-up
 
@@ -164,13 +266,6 @@ Response:
 ```md
 HTTP/1.1 204 No Content
 ```
-
-### Users
-
-| Verb | URI Pattern | Controller#Action |
-|------|-------------|-------------------|
-| GET  | `/users`    | `users#index`     |
-| GET  | `/users/1`  | `users#show`      |
 
 #### GET /users
 
