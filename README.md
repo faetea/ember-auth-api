@@ -87,10 +87,11 @@ arts table
 
 #### Users
 
-| Verb | URI Pattern | Controller#Action |
-|------|-------------|-------------------|
-| GET  | `/users`    | `users#index`     |
-| GET  | `/users/1`  | `users#show`      |
+| Verb  | URI Pattern  | Controller#Action |
+|-------|--------------|-------------------|
+| GET   | `/users`     | `users#index`     |
+| GET   | `/users/:id` | `users#show`      |
+| PATCH | `/users/:id` | `users#update`    |
 
 #### Collections
 
@@ -321,6 +322,7 @@ Content-Type: application/json; charset=utf-8
 
 1.  `rails g scaffold collection`, and `rails g scaffold art`
 1.  looked over scaffold, filled in with models and table migrations
+1.  added update to users_controller
 
 ## Useful Links
 

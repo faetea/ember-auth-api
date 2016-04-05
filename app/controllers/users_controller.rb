@@ -44,17 +44,29 @@ class UsersController < ProtectedController
     end
   end
 
+  # GET /users/
   def index
     render json: User.all
   end
 
+  # GET /users/:id
   def show
     user = User.find(params[:id])
     render json: user
   end
 
+  # PATCH /users/:id
   def update
-    head :bad_request
+    if current_user == User.find(params[:id])
+      user = User.update(profile_params)
+      if user.valid?
+        render json: user, status: :created
+      else
+        render json: user.errors, status: :unprocessable_entity
+      end
+    else
+      head :unauthorized
+    end
   end
 
   private
@@ -69,5 +81,9 @@ class UsersController < ProtectedController
           .permit(:old, :new)
   end
 
-  private :user_creds, :pw_creds
+  def profile_params
+    params.permit(:email, :username, :first_name, :last_name, :bio, :image)
+  end
+
+  private :user_creds, :pw_creds, :profile_params
 end
