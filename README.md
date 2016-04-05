@@ -112,16 +112,6 @@ arts table
 | PATCH  | `/arts/:id` | `arts#update`     | Update specific         |
 | DELETE | `/arts/:id` | `arts#destroy`    | Delete specific         |
 
-## Dependencies
-
-Install with `bundle install`.
-
--   [`rails-api`](https://github.com/rails-api/rails-api)
--   [`rails`](https://github.com/rails/rails)
--   [`active_model_serializers`](https://github.com/rails-api/active_model_serializers)
--   [`ruby`](https://www.ruby-lang.org/en/)
--   [`postgres`](http://www.postgresql.org)
-
 ## Installation
 
 1.  Install dependencies with `bundle install`.
@@ -326,6 +316,20 @@ Content-Type: application/json; charset=utf-8
   }
 }
 ```
+
+## Steps Taken
+
+1.  `rails g scaffold collection`, and `rails g scaffold art`
+1.  looked over scaffold, filled in with models and table migrations
+
+## Useful Links
+
+-   [Ruby on Rails Guide](http://guides.rubyonrails.org/)
+-   [Github rails-api](https://github.com/rails-api/rails-api)
+-   [Github Rails](https://github.com/rails/rails)
+-   [active_model_serializers](https://github.com/rails-api/active_model_serializers)
+-   [Ruby](https://www.ruby-lang.org/en/)
+-   [Postgres](http://www.postgresql.org)
 
 ## [License](LICENSE)
 
