@@ -1,6 +1,17 @@
 class CollectionsController < ApplicationController
   before_action :set_collection, only: [:show, :update, :destroy]
 
+  # POST /collections
+  def create
+    @collection = Collection.new(collection_params)
+
+    if @collection.save
+      render json: @collection, status: :created
+    else
+      render json: @collection.errors, status: :unprocessable_entity
+    end
+  end
+
   # GET /collections
   def index
     @collections = Collection.all
@@ -13,23 +24,11 @@ class CollectionsController < ApplicationController
     render json: @collection
   end
 
-  # POST /collections
-  def create
-    @collection = Collection.new(collection_params)
-
-    if @collection.save
-      render json: @collection, status: :created, location: @collection
-    else
-      render json: @collection.errors, status: :unprocessable_entity
-    end
-  end
-
   # PATCH/PUT /collections/1
   def update
-    @collection = Collection.find(params[:id])
-
     if @collection.update(collection_params)
-      head :no_content
+      # head :no_content
+      render json: @collection, status: :updated
     else
       render json: @collection.errors, status: :unprocessable_entity
     end
@@ -49,6 +48,8 @@ class CollectionsController < ApplicationController
     end
 
     def collection_params
-      params[:collection]
+      params.permit(:name, :desc, :image, :user_id)
     end
+
+    private :set_collection, :collection_params
 end

@@ -1,18 +1,6 @@
 class ArtsController < ApplicationController
   before_action :set_art, only: [:show, :update, :destroy]
 
-  # GET /arts
-  def index
-    @arts = Art.all
-
-    render json: @arts
-  end
-
-  # GET /arts/1
-  def show
-    render json: @art
-  end
-
   # POST /arts
   def create
     @art = Art.new(art_params)
@@ -24,10 +12,20 @@ class ArtsController < ApplicationController
     end
   end
 
+  # GET /arts
+  def index
+    @arts = Art.all
+
+    render json: @arts.as_json(only: [:id, :title, :caption, :image], include: [:collection])
+  end
+
+  # GET /arts/:id
+  def show
+    render json: @art.as_json(only: [:id, :title, :caption, :image], include: [:collection])
+  end
+
   # PATCH/PUT /arts/1
   def update
-    @art = Art.find(params[:id])
-
     if @art.update(art_params)
       head :no_content
     else
@@ -49,6 +47,7 @@ class ArtsController < ApplicationController
     end
 
     def art_params
-      params[:art]
+      params.permit(:title, :caption, :image)
     end
+
 end
