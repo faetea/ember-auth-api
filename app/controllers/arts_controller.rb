@@ -1,5 +1,8 @@
 class ArtsController < ApplicationController
   before_action :set_art, only: [:show, :update, :destroy]
+  skip_before_action :authenticate, only: [:index, :show] # read only
+  # require auth for [:create, :update, :destroy]
+  # current_user call to get authenticated user (or nil)
 
   # POST /arts
   def create

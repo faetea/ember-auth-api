@@ -55,19 +55,24 @@ class UsersController < ProtectedController
     render json: user
   end
 
-  # PATCH /users/:id
+  # PATCH/PUT /users/:id
   def update
+  # check current_user
     if current_user == User.find(params[:id])
-      user = User.update(profile_params)
-      if user.valid?
-        render json: user, status: :created
+    console.log('who is current_user? | collection update')
+    console.log(current_user)
+
+      if user.update(user.id, user_params)
+        render json: user, status: :ok
       else
         render json: user.errors, status: :unprocessable_entity
       end
+
     else
       head :unauthorized
     end
   end
+
 
   private
 
@@ -79,9 +84,9 @@ class UsersController < ProtectedController
     params.require(:passwords).permit(:old, :new)
   end
 
-  def profile_params
-    params.permit(:email, :username, :first_name, :last_name, :bio, :image)
+  def user_params
+    params.require(:user).permit(:email, :username, :first_name, :last_name, :bio, :image)
   end
 
-  private :user_creds, :pw_creds, :profile_params
+  private :user_creds, :pw_creds, :user_params
 end

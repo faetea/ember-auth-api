@@ -75,6 +75,40 @@ arts table
 
 ### Routes
 
+-   PUT is a direct modification even if fields/inputs are null/undefined
+-   PATCH only changes fields that are mentioned
+
+#### Arts
+
+| Verb   | URI Pattern | Controller#Action |
+| -------|-------------|-------------------|
+| GET    | `/arts`     | `arts#index`      |
+| POST   | `/arts`     | `arts#create`     |
+| GET    | `/arts/:id` | `arts#show`       |
+| PATCH  | `/arts/:id` | `arts#update`     |
+| PUT    | `/arts/:id` | `arts#update`     |
+| DELETE | `/arts/:id` | `arts#destroy`    |
+
+#### Collections
+
+| Verb   | URI Pattern        | Controller#Action     |
+| -------|--------------------|-----------------------|
+| GET    | `/collections`     | `collections#index`   |
+| POST   | `/collections`     | `collections#create`  |
+| GET    | `/collections/:id` | `collections#show`    |
+| PATCH  | `/collections/:id` | `collections#update`  |
+| PUT    | `/collections/:id` | `collections#update`  |
+| DELETE | `/collections/:id` | `collections#destroy` |
+
+#### Users
+
+| Verb  | URI Pattern  | Controller#Action |
+|-------|--------------|-------------------|
+| GET   | `/users`     | `users#index`     |
+| GET   | `/users/:id` | `users#show`      |
+| PATCH | `/users/:id` | `users#update`    |
+| PUT   | `/users/:id` | `users#update`    |
+
 #### Authentication
 
 | Verb   | URI Pattern            | Controller#Action |
@@ -84,34 +118,6 @@ arts table
 | PATCH  | `/change-password/:id` | `users#changepw`  |
 | DELETE | `/sign-out/:id`        | `users#signout`   |
 
-#### Users
-
-| Verb  | URI Pattern  | Controller#Action |
-|-------|--------------|-------------------|
-| GET   | `/users`     | `users#index`     |
-| GET   | `/users/:id` | `users#show`      |
-| PATCH | `/users/:id` | `users#update`    |
-
-#### Collections
-
-| Verb   | URI Pattern        | Controller#Action     | Description             |
-|--------|--------------------|-----------------------|-------------------------|
-| GET    | `/collections`     | `collections#index`   | (R) display list of all |
-| POST   | `/collections`     | `collections#create`  | Create new              |
-| GET    | `/collections/:id` | `collections#show`    | (R) display specific    |
-| PATCH  | `/collections/:id` | `collections#update`  | Update specific         |
-| DELETE | `/collections/:id` | `collections#destroy` | Delete specific         |
-
-#### Arts
-
-| Verb   | URI Pattern | Controller#Action | Description             |
-|--------|-------------|-------------------|-------------------------|
-| GET    | `/arts`     | `arts#index`      | (R) display list of all |
-| POST   | `/arts`     | `arts#create`     | Create new              |
-| GET    | `/arts/:id` | `arts#show`       | (R) display specific    |
-| PATCH  | `/arts/:id` | `arts#update`     | Update specific         |
-| DELETE | `/arts/:id` | `arts#destroy`    | Delete specific         |
-
 ## Installation
 
 1.  Install dependencies with `bundle install`.
@@ -120,7 +126,7 @@ arts table
 
 ## Tasks to run often
 
--   `rake routes` lists the endpoints available in your API.
+-   `bundle exec rake routes` lists the endpoints available in your API.
 -   `rake test` runs automated tests.
 -   `rails console` opens a REPL that pre-loads the API.
 -   `rails db` opens your database client and loads the correct database.
@@ -133,6 +139,7 @@ arts table
 1.  looked over scaffold, filled in with models and table migrations
 1.  added update to users_controller
 1.  need to write controller actions
+1.  wrote update actions for users and collections, untested
 
 ## Useful Links
 
