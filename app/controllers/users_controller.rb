@@ -51,25 +51,17 @@ class UsersController < ProtectedController
 
   # GET /users/:id
   def show
-    user = User.find(params[:id])
-    render json: user
+    render json: User.find(params[:id])
   end
 
   # PATCH/PUT /users/:id
   def update
-  # check current_user
-    if current_user == User.find(params[:id])
-    console.log('who is current_user? | collection update')
-    console.log(current_user)
+    @user = User.find(params[:id])
 
-      if user.update(user.id, user_params)
-        render json: user, status: :ok
-      else
-        render json: user.errors, status: :unprocessable_entity
-      end
-
+    if @user.update(user_params)
+      render json: @user, status: :ok
     else
-      head :unauthorized
+      render json: @user.errors, status: :unprocessable_entity
     end
   end
 

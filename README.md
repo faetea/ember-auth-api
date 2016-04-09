@@ -6,30 +6,36 @@ Rails API for an art collection (to be used as a photo album or image gallery).
 
 ### Models
 
-> User Model
->  include Authentication
->  has_many :collections
->  has_many :arts, through: :collections
->
->  validates :username, :email, :password_digest, uniqueness: true
->  validates :bio, length: { maximum: 500,
->    too_long: "%{count} characters is the maximum allowed" }
+User Model
 
-> Collection Model
->  has_many :arts
->  belongs_to :user
->
->  validates :image, presence: true
->  validates :desc, length: { maximum: 1000,
->    too_long: "%{count} characters is the maximum allowed" }
+```ruby
+include Authentication
+has_many :collections
+has_many :arts, through: :collections
 
-> Art Model
->  belongs_to :collection
->  belongs_to :user, through: :collections
->
->  validates :image, presence: true
->  validates :caption, length: { maximum: 250,
->    too_long: "%{count} characters is the maximum allowed" }
+validates :username, :email, :password_digest, uniqueness: true
+validates :bio, length: { maximum: 500, too_long: "%{count} characters is the maximum allowed" }
+```
+
+Collection Model
+
+```ruby
+has_many :arts
+belongs_to :user
+
+validates :image, presence: true
+validates :desc, length: { maximum: 1000, too_long: "%{count} characters is the maximum allowed" }
+```
+
+Art Model
+
+```ruby
+belongs_to :collection
+belongs_to :user, through: :collections
+
+validates :image, presence: true
+validates :caption, length: { maximum: 250, too_long: "%{count} characters is the maximum allowed" }
+```
 
 ### DB Tables
 
@@ -57,7 +63,6 @@ collections table
   t.string :image
 
   t.references :user
-
   t.timestamps
 ```
 
@@ -69,7 +74,6 @@ arts table
   t.string :image
 
   t.references :collection
-
   t.timestamps
 ```
 
@@ -124,6 +128,12 @@ arts table
 1.  Setup database w/ `bin/rake db:nuke_pave` or `bundle exec rake db:nuke_pave`
 1.  Run the API server with `bin/rails server` or `bundle exec rails server`.
 
+## CURL Documentation
+
+Scripts are included in [`scripts`](scripts) to test built-in actions.
+As an alternative, write automated tests in RSpec to test API.
+User authentication is built-in.
+
 ## Tasks to run often
 
 -   `bundle exec rake routes` lists the endpoints available in your API.
@@ -131,7 +141,7 @@ arts table
 -   `rails console` opens a REPL that pre-loads the API.
 -   `rails db` opens your database client and loads the correct database.
 -   `rails server` starts the API.
--   `scripts/*.sh` run various `curl` commands to test the API. See below.
+-   `scripts/*.sh` run various `curl` commands to test the API.
 
 ## Steps Taken
 
@@ -140,6 +150,8 @@ arts table
 1.  added update to users_controller
 1.  need to write controller actions
 1.  wrote update actions for users and collections, untested
+1.  Scott explained `chmod 755 *.sh` will make my new curl scripts runable
+1.  fixed update action for users!
 
 ## Useful Links
 
