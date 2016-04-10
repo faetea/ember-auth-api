@@ -23,7 +23,7 @@ class UsersController < ProtectedController
     end
   end
 
-  # DELETE '/sign-out/1'
+  # DELETE '/sign-out/:id'
   def signout
     if current_user == User.find(params[:id])
       current_user.logout
@@ -44,30 +44,41 @@ class UsersController < ProtectedController
     end
   end
 
+  # GET /users/
   def index
     render json: User.all
   end
 
+  # GET /users/:id
   def show
-    user = User.find(params[:id])
-    render json: user
+    render json: User.find(params[:id])
   end
 
+  # PATCH/PUT /users/:id
   def update
-    head :bad_request
+    @user = User.find(params[:id])
+
+    if @user.update(user_params)
+      render json: @user, status: :ok
+    else
+      render json: @user.errors, status: :unprocessable_entity
+    end
   end
+
 
   private
 
   def user_creds
-    params.require(:credentials)
-          .permit(:email, :password, :password_confirmation)
+    params.require(:credentials).permit(:email, :password, :password_confirmation)
   end
 
   def pw_creds
-    params.require(:passwords)
-          .permit(:old, :new)
+    params.require(:passwords).permit(:old, :new)
   end
 
-  private :user_creds, :pw_creds
+  def user_params
+    params.require(:user).permit(:email, :username, :first_name, :last_name, :bio, :image)
+  end
+
+  private :user_creds, :pw_creds, :user_params
 end

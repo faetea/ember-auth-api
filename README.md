@@ -1,263 +1,160 @@
-[![General Assembly Logo](https://camo.githubusercontent.com/1a91b05b8f4d44b5bbfb83abac2b0996d8e26c92/687474703a2f2f692e696d6775722e636f6d2f6b6538555354712e706e67)](https://generalassemb.ly/education/web-development-immersive)
+# Rails Api for Ember Application w/ Authentication
 
-# rails-api-template
+Rails API for an art collection (to be used as a photo album or image gallery).
 
-A template for starting projects with `rails-api`. Includes authentication.
+## API Structure
 
-At the beginning of each cohort, update the versions in [`Gemfile`](Gemfile).
+### Models
 
-## Dependencies
+User Model
 
-Install with `bundle install`.
+```ruby
+include Authentication
+has_many :collections, dependent: :destroy
+# validates :username, :email, :password_digest, uniqueness: true
+# validates :bio, length: { maximum: 500, too_long: "%{count} characters is the maximum allowed" }
+```
 
--   [`rails-api`](https://github.com/rails-api/rails-api)
--   [`rails`](https://github.com/rails/rails)
--   [`active_model_serializers`](https://github.com/rails-api/active_model_serializers)
--   [`ruby`](https://www.ruby-lang.org/en/)
--   [`postgres`](http://www.postgresql.org)
+Collection Model
 
-Until Rails 5 is released, this template should follow the most recent released
-version of Rails 4, as well as track `master` branches for `rails-api` and
-`active_model_serializers`.
+```ruby
+belongs_to :user
+has_many :arts, dependent: :destroy
+# validates :image, presence: true
+# validates :desc, length: { maximum: 1000, too_long: "%{count} characters is the maximum allowed" }
+```
 
-## Installation
+Art Model
 
-1.  [Download](../../archive/master.zip) this template.
-1.  Unzip and rename the template directory.
-1.  Empty [`README.md`](README.md) and fill with your own content.
-1.  Move into the new project and `git init`.
-1.  Install dependencies with `bundle install`.
-1.  Rename your app module in `config/application.rb` (change
-    `RailsApiTemplate`).
-1.  Rename your project database in `config/database.yml` (change
-    `'rails-api-template'`).
-1.  Make new `development` and `test` secrets for `config/secrets.yml`. Add and
-    commit this file.
-1.  Setup your database with `bin/rake db:nuke_pave` or `bundle exec rake
-    db:nuke_pave`.
-1.  Run the API server with `bin/rails server` or `bundle exec rails server`.
+```ruby
+belongs_to :collection
+# validates :image, presence: true
+# validates :caption, length: { maximum: 250, too_long: "%{count} characters is the maximum allowed" }
+```
 
-## Structure
+### DB Tables
 
-This template follows the standard project structure in Rails 4.
+users table
 
-`curl` command scripts are stored in [`scripts`](scripts) with names that
-correspond to API actions.
+```ruby
+  t.string :email, null: false, index: { unique: true }
+  t.string :token, null: false, index: { unique: true }
+  t.string :password_digest, null: false
 
-User authentication is built-in.
+  t.string :username, index: { unique: true }
+  t.string :first_name
+  t.string :last_name
+  t.text :bio
+  t.string :image
 
-## Tasks
+  t.timestamps null: false
+```
 
-Developers should run these often!
+collections table
 
--   `rake routes` lists the endpoints available in your API.
--   `rake test` runs automated tests.
--   `rails console` opens a REPL that pre-loads the API.
--   `rails db` opens your database client and loads the correct database.
--   `rails server` starts the API.
--   `scripts/*.sh` run various `curl` commands to test the API. See below.
+```ruby
+  t.string :name
+  t.text :desc
+  t.string :image
 
-<!-- TODO -   `rake nag` checks your code style. -->
-<!-- TODO -   `rake lint` checks your code for syntax errors. -->
+  t.references :user
+  t.timestamps
+```
 
-## API
+arts table
 
-Use this as the basis for your own API documentation. Add a new third-level
-heading for your custom entities, and follow the pattern provided for the
-built-in user authentication documentation.
+```ruby
+  t.string :title
+  t.text :caption
+  t.string :image
 
-Scripts are included in [`scripts`](scripts) to test built-in actions. Add your
-own scripts to test your custom API. As an alternative, you can write automated
-tests in RSpec to test your API.
+  t.references :collection
+  t.timestamps
+```
 
-### Authentication
+### Routes
+
+-   PUT is a direct modification even if fields/inputs are null/undefined
+-   PATCH only changes fields that are mentioned
+
+#### Arts
+
+| Verb   | URI Pattern | Controller#Action |
+| -------|-------------|------------------ |
+| GET    | `/arts`     | `arts#index`      |
+| POST   | `/arts`     | `arts#create`     |
+| GET    | `/arts/:id` | `arts#show`       |
+| PATCH  | `/arts/:id` | `arts#update`     |
+| DELETE | `/arts/:id` | `arts#destroy`    |
+
+#### Collections
+
+| Verb   | URI Pattern        | Controller#Action     |
+| -------|--------------------|---------------------- |
+| GET    | `/collections`     | `collections#index`   |
+| POST   | `/collections`     | `collections#create`  |
+| GET    | `/collections/:id` | `collections#show`    |
+| PATCH  | `/collections/:id` | `collections#update`  |
+| DELETE | `/collections/:id` | `collections#destroy` |
+
+#### Users
+
+| Verb  | URI Pattern  | Controller#Action |
+| ------|--------------|------------------ |
+| GET   | `/users`     | `users#index`     |
+| GET   | `/users/:id` | `users#show`      |
+| PATCH | `/users/:id` | `users#update`    |
+| PUT   | `/users/:id` | `users#update`    |
+
+#### Authentication
 
 | Verb   | URI Pattern            | Controller#Action |
-|--------|------------------------|-------------------|
+| -------|------------------------|------------------ |
 | POST   | `/sign-up`             | `users#signup`    |
 | POST   | `/sign-in`             | `users#signin`    |
 | PATCH  | `/change-password/:id` | `users#changepw`  |
 | DELETE | `/sign-out/:id`        | `users#signout`   |
 
-#### POST /sign-up
+## Installation
 
-Request:
+1.  Install dependencies with `bundle install`.
+1.  Setup database w/ `bundle exec rake db:nuke_pave` or `bin/rake db:nuke_pave`
+1.  Run the API server with `bundle exec rails server` or `bin/rails server`
 
-```sh
-curl --include --request POST http://localhost:3000/sign-up \
-  --header "Content-Type: application/json" \
-  --data '{
-    "credentials": {
-      "email": "an@example.email",
-      "password": "an example password",
-      "password_confirmation": "an example password"
-    }
-  }'
-```
+## CURL Documentation
 
-```sh
-scripts/sign-up.sh
-```
+Scripts are included in [`scripts`](scripts) to test built-in actions.
+As an alternative, write automated tests in RSpec to test API.
+User authentication is built-in.
 
-Response:
+## Tasks to run often
 
-```md
-HTTP/1.1 201 Created
-Content-Type: application/json; charset=utf-8
+-   `bundle exec rake routes` lists the endpoints available in your API.
+-   `rake test` runs automated tests.
+-   `rails console` opens a REPL that pre-loads the API.
+-   `rails db` opens your database client and loads the correct database.
+-   `rails server` starts the API.
+-   `scripts/*.sh` run various `curl` commands to test the API.
 
-{
-  "user": {
-    "id": 1,
-    "email": "an@example.email"
-  }
-}
-```
+## Steps Taken
 
-#### POST /sign-in
+1.  `rails g scaffold collection`, and `rails g scaffold art`
+1.  looked over scaffold, filled in with models and table migrations
+1.  added update to users_controller
+1.  need to write controller actions
+1.  wrote update actions for users and collections, untested
+1.  Scott explained `chmod 755 *.sh` will make my new curl scripts runable
+1.  fixed update action for users!
+1.  tested update and delete on collections_controller with curl
 
-Request:
+## Useful Links
 
-```sh
-curl --include --request POST http://localhost:3000/sign-in \
-  --header "Content-Type: application/json" \
-  --data '{
-    "credentials": {
-      "email": "an@example.email",
-      "password": "an example password"
-    }
-  }'
-```
-
-```sh
-scripts/sign-in.sh
-```
-
-Response:
-
-```md
-HTTP/1.1 200 OK
-Content-Type: application/json; charset=utf-8
-
-{
-  "user": {
-    "id": 1,
-    "email": "an@example.email",
-    "token": "33ad6372f795694b333ec5f329ebeaaa"
-  }
-}
-```
-
-#### PATCH /change-password/:id
-
-Request:
-
-```sh
-curl --include --request PATCH http://localhost:3000/change-password/$ID \
-  --header "Authorization: Token token=$TOKEN" \
-  --header "Content-Type: application/json" \
-  --data '{
-    "passwords": {
-      "old": "an example password",
-      "new": "super sekrit"
-    }
-  }'
-```
-
-```sh
-ID=1 TOKEN=33ad6372f795694b333ec5f329ebeaaa scripts/change-password.sh
-```
-
-Response:
-
-```md
-HTTP/1.1 204 No Content
-```
-
-#### DELETE /sign-out/:id
-
-Request:
-
-```sh
-curl --include --request DELETE http://localhost:3000/sign-out/$ID \
-  --header "Authorization: Token token=$TOKEN"
-```
-
-```sh
-ID=1 TOKEN=33ad6372f795694b333ec5f329ebeaaa scripts/sign-out.sh
-```
-
-Response:
-
-```md
-HTTP/1.1 204 No Content
-```
-
-### Users
-
-| Verb | URI Pattern | Controller#Action |
-|------|-------------|-------------------|
-| GET  | `/users`    | `users#index`     |
-| GET  | `/users/1`  | `users#show`      |
-
-#### GET /users
-
-Request:
-
-```sh
-curl --include --request GET http://localhost:3000/users \
-  --header "Authorization: Token token=$TOKEN"
-```
-
-```sh
-TOKEN=33ad6372f795694b333ec5f329ebeaaa scripts/users.sh
-```
-
-Response:
-
-```md
-HTTP/1.1 200 OK
-Content-Type: application/json; charset=utf-8
-
-{
-  "users": [
-    {
-      "id": 2,
-      "email": "another@example.email"
-    },
-    {
-      "id": 1,
-      "email": "an@example.email"
-    }
-  ]
-}
-```
-
-#### GET /users/:id
-
-Request:
-
-```sh
-curl --include --request GET http://localhost:3000/users/$ID \
-  --header "Authorization: Token token=$TOKEN"
-```
-
-```sh
-ID=2 TOKEN=33ad6372f795694b333ec5f329ebeaaa scripts/user.sh
-```
-
-Response:
-
-```md
-HTTP/1.1 200 OK
-Content-Type: application/json; charset=utf-8
-
-{
-  "user": {
-    "id": 2,
-    "email": "another@example.email"
-  }
-}
-```
+-   [Ruby on Rails Guide](http://guides.rubyonrails.org/)
+-   [Github rails-api](https://github.com/rails-api/rails-api)
+-   [Github Rails](https://github.com/rails/rails)
+-   [active_model_serializers](https://github.com/rails-api/active_model_serializers)
+-   [Ruby](https://www.ruby-lang.org/en/)
+-   [Postgres](http://www.postgresql.org)
 
 ## [License](LICENSE)
 
