@@ -1,41 +1,11 @@
-class CollectionsController < ApplicationController
+class CollectionsController < ProtectedController
   before_action :set_collection, only: [:show, :update, :destroy]
   skip_before_action :authenticate, only: [:index, :show] # read only
-  # require auth for [:create, :update, :destroy, :my_collections]
-  # current_user call to get authenticated user (or nil)
-
-  # PATCH/PUT /collections/:id
-  def update
-  # if current_user is same as collection_owner
-    if current_user == @collection.user_id
-      console.log('who is current_user? | collection update')
-      console.log(current_user)
-
-      if @collection.update(@collection.id, collection_params)
-        render json: @collection, status: :ok
-      else
-        render json: @collection.errors, status: :unprocessable_entity
-      end
-
-    else
-      head :unauthorized
-    end
-  end
-
-  # DELETE /collections/:id
-  def destroy
-  # if current_user is same as collection_owner
-    if current_user == @collection.user_id
-      @collection.destroy
-      head :no_content
-    else
-      head :unauthorized
-    end
-  end
 
   # POST /collections
   def create
-    @new_collection = Collection.new(collection_params)
+    # @new_collection = Collection.new(collection_params) unauthenticated Create
+    @new_collection = current_user.collections.build(collection_params)
 
     if @new_collection.save
       render json: @new_collection, status: :created
@@ -44,8 +14,32 @@ class CollectionsController < ApplicationController
     end
   end
 
+  # PATCH /collections/:id
+  def update
+    owner = @collection.user_id
+    if current_user.id == owner
+      if @collection.update(collection_params)
+        render json: @collection, status: :ok
+      else
+        render json: @collection.errors, status: :unprocessable_entity
+      end
+    else
+      head :unauthorized
+    end
+  end
+
+  # DELETE /collections/:id
+  def destroy
+    owner = @collection.user_id
+    if current_user.id == owner
+      @collection.destroy
+      head :no_content
+    else
+      head :unauthorized
+    end
+  end
+
   # GET /mycollections
-  # Index all of current_user's collections
   def my_collections
   # finds all collection belonging to current_user
     render json: Collection.where(:user_id => current_user.id)
@@ -54,9 +48,7 @@ class CollectionsController < ApplicationController
   # GET /collections
   # Browse everyone's collections
   def index
-    @collections = Collection.all
-
-    render json: @collections
+    render json: Collection.all
   end
 
   # GET /collections/:id

@@ -125,8 +125,8 @@ arts table
 ## Installation
 
 1.  Install dependencies with `bundle install`.
-1.  Setup database w/ `bin/rake db:nuke_pave` or `bundle exec rake db:nuke_pave`
-1.  Run the API server with `bin/rails server` or `bundle exec rails server`.
+1.  Setup database w/ `bundle exec rake db:nuke_pave` or `bin/rake db:nuke_pave`
+1.  Run the API server with `bundle exec rails server` or `bin/rails server`
 
 ## CURL Documentation
 
@@ -152,6 +152,7 @@ User authentication is built-in.
 1.  wrote update actions for users and collections, untested
 1.  Scott explained `chmod 755 *.sh` will make my new curl scripts runable
 1.  fixed update action for users!
+1.  tested update and delete on collections_controller with curl
 
 ## Useful Links
 

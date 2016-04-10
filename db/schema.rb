@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 20160405023658) do
   create_table "arts", force: :cascade do |t|
     t.string   "title"
     t.text     "caption"
-    t.string   "image",         null: false
+    t.string   "image"
     t.integer  "collection_id", null: false
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 20160405023658) do
   create_table "collections", force: :cascade do |t|
     t.string   "name"
     t.text     "desc"
-    t.string   "image",      null: false
+    t.string   "image"
     t.integer  "user_id",    null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

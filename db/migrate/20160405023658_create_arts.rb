@@ -3,7 +3,7 @@ class CreateArts < ActiveRecord::Migration
     create_table :arts do |t|
       t.string :title
       t.text :caption
-      t.string :image, null: false
+      t.string :image
 
       t.references :collection, null: false
       t.timestamps null: false
