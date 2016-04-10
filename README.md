@@ -10,31 +10,26 @@ User Model
 
 ```ruby
 include Authentication
-has_many :collections
-has_many :arts, through: :collections
-
-validates :username, :email, :password_digest, uniqueness: true
-validates :bio, length: { maximum: 500, too_long: "%{count} characters is the maximum allowed" }
+has_many :collections, dependent: :destroy
+# validates :username, :email, :password_digest, uniqueness: true
+# validates :bio, length: { maximum: 500, too_long: "%{count} characters is the maximum allowed" }
 ```
 
 Collection Model
 
 ```ruby
-has_many :arts
 belongs_to :user
-
-validates :image, presence: true
-validates :desc, length: { maximum: 1000, too_long: "%{count} characters is the maximum allowed" }
+has_many :arts, dependent: :destroy
+# validates :image, presence: true
+# validates :desc, length: { maximum: 1000, too_long: "%{count} characters is the maximum allowed" }
 ```
 
 Art Model
 
 ```ruby
 belongs_to :collection
-belongs_to :user, through: :collections
-
-validates :image, presence: true
-validates :caption, length: { maximum: 250, too_long: "%{count} characters is the maximum allowed" }
+# validates :image, presence: true
+# validates :caption, length: { maximum: 250, too_long: "%{count} characters is the maximum allowed" }
 ```
 
 ### DB Tables
@@ -85,29 +80,27 @@ arts table
 #### Arts
 
 | Verb   | URI Pattern | Controller#Action |
-| -------|-------------|-------------------|
+| -------|-------------|------------------ |
 | GET    | `/arts`     | `arts#index`      |
 | POST   | `/arts`     | `arts#create`     |
 | GET    | `/arts/:id` | `arts#show`       |
 | PATCH  | `/arts/:id` | `arts#update`     |
-| PUT    | `/arts/:id` | `arts#update`     |
 | DELETE | `/arts/:id` | `arts#destroy`    |
 
 #### Collections
 
 | Verb   | URI Pattern        | Controller#Action     |
-| -------|--------------------|-----------------------|
+| -------|--------------------|---------------------- |
 | GET    | `/collections`     | `collections#index`   |
 | POST   | `/collections`     | `collections#create`  |
 | GET    | `/collections/:id` | `collections#show`    |
 | PATCH  | `/collections/:id` | `collections#update`  |
-| PUT    | `/collections/:id` | `collections#update`  |
 | DELETE | `/collections/:id` | `collections#destroy` |
 
 #### Users
 
 | Verb  | URI Pattern  | Controller#Action |
-|-------|--------------|-------------------|
+| ------|--------------|------------------ |
 | GET   | `/users`     | `users#index`     |
 | GET   | `/users/:id` | `users#show`      |
 | PATCH | `/users/:id` | `users#update`    |
@@ -116,7 +109,7 @@ arts table
 #### Authentication
 
 | Verb   | URI Pattern            | Controller#Action |
-|--------|------------------------|-------------------|
+| -------|------------------------|------------------ |
 | POST   | `/sign-up`             | `users#signup`    |
 | POST   | `/sign-in`             | `users#signin`    |
 | PATCH  | `/change-password/:id` | `users#changepw`  |
