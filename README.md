@@ -147,6 +147,18 @@ User authentication is built-in.
 1.  fixed update action for users!
 1.  tested update and delete on collections_controller with curl
 
+## Paperclip
+
+Paperclip is now compatible with aws-sdk >= 2.0.0.
+
+If you are using S3 storage, aws-sdk >= 2.0.0 requires you to make a few small
+changes:
+
+-   You must set the `s3_region`
+-   If setting permissions anywhere, such as in an initializer,
+the format for permissions changed from underscore to hyphen.
+For example, `:public_read` needs to be changed to `public-read`.
+
 ## Useful Links
 
 -   [Ruby on Rails Guide](http://guides.rubyonrails.org/)

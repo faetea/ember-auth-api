@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 20160405023658) do
   create_table "collections", force: :cascade do |t|
     t.string   "name"
     t.text     "desc"
-    t.string   "image"
+    t.string   "cover"
     t.integer  "user_id",    null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 20160405023658) do
     t.string   "first_name"
     t.string   "last_name"
     t.text     "bio"
-    t.string   "image"
+    t.string   "avatar"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
   end

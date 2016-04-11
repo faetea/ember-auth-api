@@ -77,7 +77,7 @@ class UsersController < ProtectedController
   end
 
   def user_params
-    params.require(:user).permit(:email, :username, :first_name, :last_name, :bio, :image)
+    params.require(:user).permit(:email, :username, :first_name, :last_name, :bio, :avatar)
   end
 
   private :user_creds, :pw_creds, :user_params

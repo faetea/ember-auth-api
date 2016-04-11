@@ -3,7 +3,7 @@ class CreateCollections < ActiveRecord::Migration
     create_table :collections do |t|
       t.string :name
       t.text :desc
-      t.string :image
+      t.string :cover
 
       t.references :user, null: false
       t.timestamps null: false

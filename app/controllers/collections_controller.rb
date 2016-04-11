@@ -65,7 +65,7 @@ class CollectionsController < ProtectedController
     end
 
     def collection_params
-      params.require(:collection).permit(:name, :desc, :image, :user_id)
+      params.require(:collection).permit(:name, :desc, :cover, :user_id)
     end
 
     private :set_collection, :collection_params
