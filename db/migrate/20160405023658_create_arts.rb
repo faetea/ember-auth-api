@@ -3,9 +3,8 @@ class CreateArts < ActiveRecord::Migration
     create_table :arts do |t|
       t.string :title
       t.text :caption
-      t.string :image
 
-      t.references :collection, null: false
+      t.references :collection, index: true, foreign_key: true
       t.timestamps null: false
     end
   end

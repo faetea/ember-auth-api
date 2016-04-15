@@ -50,9 +50,12 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     arel (6.0.3)
-    aws-sdk-v1 (1.66.0)
-      json (~> 1.4)
-      nokogiri (>= 1.4.4)
+    aws-sdk (2.2.34)
+      aws-sdk-resources (= 2.2.34)
+    aws-sdk-core (2.2.34)
+      jmespath (~> 1.0)
+    aws-sdk-resources (2.2.34)
+      aws-sdk-core (= 2.2.34)
     bcrypt (3.1.10)
     builder (3.2.2)
     byebug (8.2.2)
@@ -71,7 +74,10 @@ GEM
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     i18n (0.7.0)
+    jmespath (1.2.4)
+      json_pure (>= 1.8.1)
     json (1.8.3)
+    json_pure (1.8.3)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
     mail (2.6.3)
@@ -173,7 +179,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers
-  aws-sdk-v1
+  aws-sdk (>= 2.0.34)
   bcrypt (~> 3.1.7)
   byebug (~> 8.0)
   dotenv-rails
