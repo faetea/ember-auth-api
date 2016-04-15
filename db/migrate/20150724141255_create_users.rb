@@ -10,7 +10,6 @@ class CreateUsers < ActiveRecord::Migration
       t.string :first_name
       t.string :last_name
       t.text :bio
-      t.string :image
 
       t.timestamps null: false
     end

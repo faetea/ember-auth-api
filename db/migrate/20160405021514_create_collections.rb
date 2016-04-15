@@ -3,9 +3,8 @@ class CreateCollections < ActiveRecord::Migration
     create_table :collections do |t|
       t.string :name
       t.text :desc
-      t.string :image
 
-      t.references :user, null: false
+      t.references :user, index: true, foreign_key: true
       t.timestamps null: false
     end
   end

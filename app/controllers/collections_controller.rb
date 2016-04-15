@@ -4,13 +4,16 @@ class CollectionsController < ProtectedController
 
   # POST /collections
   def create
-    # @new_collection = Collection.new(collection_params) unauthenticated Create
-    @new_collection = current_user.collections.build(collection_params)
+    if current_user
+      new_collection = current_user.collections.new(collection_params)
 
-    if @new_collection.save
-      render json: @new_collection, status: :created
+      if new_collection.save
+        render json: new_collection, status: :created
+      else
+        render json: new_collection.errors, status: :unprocessable_entity
+      end
     else
-      render json: @new_collection.errors, status: :unprocessable_entity
+      head :unauthorized
     end
   end
 
@@ -65,7 +68,7 @@ class CollectionsController < ProtectedController
     end
 
     def collection_params
-      params.require(:collection).permit(:name, :desc, :image, :user_id)
+      params.require(:collection).permit(:name, :desc, :cover, :user_id)
     end
 
     private :set_collection, :collection_params
