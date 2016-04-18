@@ -29,3 +29,7 @@ group :test do
   gem 'rspec-rails', '~> 3.4.2'
   gem 'rspec', '~> 3.4.0'
 end
+
+gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
+gem 'aws-sdk', '>= 2.0.34'
+gem 'dotenv-rails'

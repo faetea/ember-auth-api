@@ -2,6 +2,12 @@
 
 Rails API for an art collection (to be used as a photo album or image gallery).
 
+## Installation
+
+1.  Install dependencies with `bundle install`.
+1.  Setup database w/ `bundle exec rake db:nuke_pave` or `bin/rake db:nuke_pave`
+1.  Run the API server with `bundle exec rails server` or `bin/rails server`
+
 ## API Structure
 
 ### Models
@@ -115,12 +121,6 @@ arts table
 | PATCH  | `/change-password/:id` | `users#changepw`  |
 | DELETE | `/sign-out/:id`        | `users#signout`   |
 
-## Installation
-
-1.  Install dependencies with `bundle install`.
-1.  Setup database w/ `bundle exec rake db:nuke_pave` or `bin/rake db:nuke_pave`
-1.  Run the API server with `bundle exec rails server` or `bin/rails server`
-
 ## CURL Documentation
 
 Scripts are included in [`scripts`](scripts) to test built-in actions.
@@ -146,6 +146,28 @@ User authentication is built-in.
 1.  Scott explained `chmod 755 *.sh` will make my new curl scripts runable
 1.  fixed update action for users!
 1.  tested update and delete on collections_controller with curl
+
+1.  useful generator `rails g paperclip Model Attachment`, creates migration
+1.  Ember is passing in data, I'm following error messages to get image to S3
+
+## Paperclip
+
+Paperclip is now compatible with aws-sdk >= 2.0.0.
+
+If you are using S3 storage, aws-sdk >= 2.0.0 requires you to make a few small
+changes:
+
+-   You must set the `s3_region`
+-   If setting permissions anywhere, such as in an initializer,
+the format for permissions changed from underscore to hyphen.
+For example, `:public_read` needs to be changed to `public-read`.
+
+### Paperclip and AWS Gems
+
+-   [Github Paperclip](https://github.com/thoughtbot/paperclip)
+-   [Heroku Paperclip S3](https://devcenter.heroku.com/articles/paperclip-s3)
+-   [Rubydoc Paperclip S3](http://www.rubydoc.info/gems/paperclip/Paperclip/Storage/S3)
+-   [Github AWS SDK Ruby](https://github.com/aws/aws-sdk-ruby)
 
 ## Useful Links
 

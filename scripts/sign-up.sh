@@ -4,9 +4,9 @@ curl --include --request POST http://localhost:3000/sign-up \
   --header "Content-Type: application/json" \
   --data '{
     "credentials": {
-      "email": "an@example.email",
-      "password": "an example password",
-      "password_confirmation": "an example password"
+      "email": "star@hub",
+      "password": "fire",
+      "password_confirmation": "fire"
     }
   }'
 
@@ -14,8 +14,18 @@ curl --include --request POST http://localhost:3000/sign-up \
   --header "Content-Type: application/json" \
   --data '{
     "credentials": {
-      "email": "another@example.email",
-      "password": "an example password",
-      "password_confirmation": "an example password"
+      "email": "moon@hub",
+      "password": "bun",
+      "password_confirmation": "bun"
+    }
+  }'
+
+curl --include --request POST http://localhost:3000/sign-up \
+  --header "Content-Type: application/json" \
+  --data '{
+    "credentials": {
+      "email": "carrot@hub",
+      "password": "soap",
+      "password_confirmation": "soap"
     }
   }'

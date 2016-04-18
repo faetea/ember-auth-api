@@ -179,3 +179,7 @@ $RECYCLE.BIN/
 
 # curl scripts, remove from git ignore when done with testing.
 /scripts
+
+S3 file-upload
+credentials.csv
+.env
