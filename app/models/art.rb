@@ -2,7 +2,7 @@ class Art < ActiveRecord::Base
   belongs_to :collection
 
   has_attached_file :image,
-                    :styles => { :medium => "300x300>", :thumb => "100x100>" },
+                    :styles => { :small => "300x300>", :thumb => "100x100>", :medium => "600x600>" },
                     :default_url => "/images/:style/missing.png"
   validates_attachment_content_type :image, :content_type => /\Aimage\/.*\Z/
 

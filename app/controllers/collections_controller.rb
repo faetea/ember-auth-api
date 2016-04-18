@@ -8,6 +8,7 @@ class CollectionsController < ProtectedController
       new_collection = current_user.collections.new(collection_params)
 
       if new_collection.save
+        # require 'pry'; binding.pry
         render json: new_collection, status: :created
       else
         render json: new_collection.errors, status: :unprocessable_entity
@@ -68,7 +69,7 @@ class CollectionsController < ProtectedController
     end
 
     def collection_params
-      params.require(:collection).permit(:name, :desc, :cover, :user_id)
+      params.require(:collection).permit(:name, :desc, :cover)
     end
 
     private :set_collection, :collection_params
