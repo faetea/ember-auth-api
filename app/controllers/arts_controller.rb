@@ -4,25 +4,24 @@ class ArtsController < ProtectedController
 
   # POST /arts
   def create
-    @art = Art.new(art_params)
+    # new_art = current_user.arts.build(art_params)
+    new_art = Art.new(art_params)
 
-    if @art.save
-      render json: @art, status: :created, location: @art
+    if new_art.save
+      render json: new_art, status: :created
     else
-      render json: @art.errors, status: :unprocessable_entity
+      render json: new_art.errors, status: :unprocessable_entity
     end
   end
 
   # GET /arts
   def index
-    @arts = Art.all
-
-    render json: @arts.as_json(only: [:id, :title, :caption, :image], include: [:collection])
+    render json: Art.all
   end
 
   # GET /arts/:id
   def show
-    render json: @art.as_json(only: [:id, :title, :caption, :image], include: [:collection])
+    render json: @art
   end
 
   # PATCH/PUT /arts/1
@@ -48,7 +47,8 @@ class ArtsController < ProtectedController
     end
 
     def art_params
-      params.require(:art).permit(:title, :caption, :image, :collection_id)
+      params.require(:art).permit(:title, :caption, :image)
     end
 
+    private :set_art, :art_params
 end
