@@ -147,7 +147,7 @@ User authentication is built-in.
 1.  fixed update action for users!
 1.  tested update and delete on collections_controller with curl
 
-1.  useful generator `rails g paperclip Model Attachment`, creates migration
+1.  useful generator `rails generate paperclip user avatar`, creates migration
 1.  Ember is passing in data, I'm following error messages to get image to S3
 
 ## Paperclip

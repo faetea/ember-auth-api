@@ -47,7 +47,7 @@ class ArtsController < ProtectedController
     end
 
     def art_params
-      params.require(:art).permit(:title, :caption, :image)
+      params.require(:art).permit(:title, :caption, :image, :collection_id)
     end
 
     private :set_art, :art_params
