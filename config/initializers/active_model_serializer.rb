@@ -6,6 +6,7 @@
 ActiveModel::Serializer.setup do |config|
   # embeds an array of ids
   config.embed = :ids
+
   # sideloads models
-  config.embed_in_root = true
+  # config.embed_in_root = true
 end

@@ -68,6 +68,73 @@ AMS works through serializers and adapters;
 Serializers describe WHICH attributes and relationships should be serialized.
 Adapters describe HOW attributes and relationships should be serialized.
 
+When /collections in Ember `return this.get('store').findAll('collection')`
+AMS will respond with all Collections, but no Art objects
+
+```json
+{
+  "collections":
+  [
+    {
+      "id":1,
+      "name":"neighbor",
+      "desc":"totoro",
+      "user_id":1,
+      "cover":"http://s3.amazonaws.com/faetea-artcollection/collections/covers/000/000/001/original/1461623034.png?1461623034",
+      "art_ids":[1,2,3,4,5,8,9,10,11,12,13]
+    },
+    {
+      "id":2,
+      "name":"timey",
+      "desc":"whimey",
+      "user_id":2,
+      "cover":"http://s3.amazonaws.com/faetea-artcollection/collections/covers/000/000/002/original/1461624382.png?1461624382",
+      "art_ids":[6,7,14]
+    },
+    {
+      "id":3,
+      "name":"Walkabout",
+      "desc":"good wandering",
+      "user_id":3,
+      "cover":"http://s3.amazonaws.com/faetea-artcollection/collections/covers/000/000/003/original/1462241650.png?1462241650",
+      "art_ids":[15]
+    }
+  ]
+}
+```
+
+When /collections/1 in Ember `collection.id`
+AMS will respond with the specific Collection
+
+```json
+{
+  "collection":
+  {
+    "id":1,
+    "name":"neighbor",
+    "desc":"totoro",
+    "user_id":1,
+    "cover":"http://s3.amazonaws.com/faetea-artcollection/collections/covers/000/000/001/original/1461623034.png?1461623034",
+    "art_ids":[1,2,3,4,5,8,9,10,11,12,13]
+  }
+}
+```
+
+And then separate responses for each Art object
+
+```json
+{
+  "art":
+  {
+    "id":1,
+    "title":"sen",
+    "caption":"chihiro",
+    "collection_id":1,
+    "image":"http://s3.amazonaws.com/faetea-artcollection/arts/images/000/000/001/original/1461623117.png?1461623117",
+  }
+}
+```
+
 ## [License](LICENSE)
 
 Source code distributed under the MIT license. Text and other assets copyright
