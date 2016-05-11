@@ -13,26 +13,26 @@ Rails API for an art collection (to be used as a photo album or image gallery).
 -   PUT is a direct modification even if fields/inputs are null/undefined
 -   PATCH only changes fields that are mentioned
 
-| Verb   | URI Pattern            | Controller#Action     |
-|--------|------------------------|-----------------------|
-| POST   | `/sign-up`             | `users#signup`        |
-| POST   | `/sign-in`             | `users#signin`        |
-| PATCH  | `/change-password/:id` | `users#changepw`      |
-| DELETE | `/sign-out/:id`        | `users#signout`       |
-| GET    | `/users`               | `users#index`         |
-| GET    | `/users/:id`           | `users#show`          |
-| PATCH  | `/users/:id`           | `users#update`        |
-| PUT    | `/users/:id`           | `users#update`        |
-| GET    | `/collections`         | `collections#index`   |
-| POST   | `/collections`         | `collections#create`  |
-| GET    | `/collections/:id`     | `collections#show`    |
-| PATCH  | `/collections/:id`     | `collections#update`  |
-| DELETE | `/collections/:id`     | `collections#destroy` |
-| GET    | `/arts`                | `arts#index`          |
-| POST   | `/arts`                | `arts#create`         |
-| GET    | `/arts/:id`            | `arts#show`           |
-| PATCH  | `/arts/:id`            | `arts#update`         |
-| DELETE | `/arts/:id`            | `arts#destroy`        |
+| Verb      | URI Pattern            | Controller#Action     |
+|-----------|------------------------|-----------------------|
+| POST      | `/sign-up`             | `users#signup`        |
+| POST      | `/sign-in`             | `users#signin`        |
+| PATCH     | `/change-password/:id` | `users#changepw`      |
+| DELETE    | `/sign-out/:id`        | `users#signout`       |
+| GET       | `/users`               | `users#index`         |
+| GET       | `/users/:id`           | `users#show`          |
+| PATCH     | `/users/:id`           | `users#update`        |
+| PUT       | `/users/:id`           | `users#update`        |
+| GET       | `/collections`         | `collections#index`   |
+| POST      | `/collections`         | `collections#create`  |
+| GET       | `/collections/:id`     | `collections#show`    |
+| PUT/PATCH | `/collections/:id`     | `collections#update`  |
+| DELETE    | `/collections/:id`     | `collections#destroy` |
+| GET       | `/arts`                | `arts#index`          |
+| POST      | `/arts`                | `arts#create`         |
+| GET       | `/arts/:id`            | `arts#show`           |
+| PUT/PATCH | `/arts/:id`            | `arts#update`         |
+| DELETE    | `/arts/:id`            | `arts#destroy`        |
 
 ## CURL Documentation
 

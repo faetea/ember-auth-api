@@ -4,13 +4,18 @@ class ArtsController < ProtectedController
 
   # POST /arts
   def create
-    # new_art = current_user.arts.build(art_params)
-    new_art = Art.new(art_params)
+    current_collection = Collection.find(art_params[:collection_id])
+    author = current_collection.user_id
+    if current_user.id == author
+        new_art = Art.new(art_params)
 
-    if new_art.save
-      render json: new_art, status: :created
+      if new_art.save
+        render json: new_art, status: :ok
+      else
+        render json: new_art.errors, status: :unprocessable_entity
+      end
     else
-      render json: new_art.errors, status: :unprocessable_entity
+      head :unauthorized
     end
   end
 
