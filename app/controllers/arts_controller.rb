@@ -7,7 +7,7 @@ class ArtsController < ProtectedController
     current_collection = Collection.find(art_params[:collection_id])
     author = current_collection.user_id
     if current_user.id == author
-        new_art = Art.new(art_params)
+      new_art = Art.new(art_params)
 
       if new_art.save
         render json: new_art, status: :ok
@@ -19,22 +19,19 @@ class ArtsController < ProtectedController
     end
   end
 
-  # GET /arts
-  def index
-    render json: Art.all
-  end
-
-  # GET /arts/:id
-  def show
-    render json: @art
-  end
-
   # PATCH/PUT /arts/1
   def update
-    if @art.update(art_params)
-      head :no_content
+    current_collection = Collection.find(art_params[:collection_id])
+    author = current_collection.user_id
+    if current_user.id == author
+
+      if @art.update(art_params)
+        render json: @art, status: :ok
+      else
+        render json: @art.errors, status: :unprocessable_entity
+      end
     else
-      render json: @art.errors, status: :unprocessable_entity
+      head :unauthorized
     end
   end
 
@@ -43,6 +40,16 @@ class ArtsController < ProtectedController
     @art.destroy
 
     head :no_content
+  end
+
+  # GET /arts
+  def index
+    render json: Art.all
+  end
+
+  # GET /arts/:id
+  def show
+    render json: @art
   end
 
   private
