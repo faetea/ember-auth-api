@@ -20,8 +20,8 @@ class CollectionsController < ProtectedController
 
   # PATCH /collections/:id
   def update
-    owner = @collection.user_id
-    if current_user.id == owner
+    author = @collection.user_id
+    if current_user.id == author
       if @collection.update(collection_params)
         render json: @collection, status: :ok
       else
@@ -34,8 +34,8 @@ class CollectionsController < ProtectedController
 
   # DELETE /collections/:id
   def destroy
-    owner = @collection.user_id
-    if current_user.id == owner
+    author = @collection.user_id
+    if current_user.id == author
       @collection.destroy
       head :no_content
     else
