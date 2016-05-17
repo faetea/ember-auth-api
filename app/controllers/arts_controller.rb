@@ -35,9 +35,12 @@ class ArtsController < ProtectedController
 
   # DELETE /arts/1
   def destroy
-    @art.destroy
-
-    head :no_content
+    if current_user.id == @author
+      @art.destroy
+      head :no_content
+    else
+      head :unauthorized
+    end
   end
 
   # GET /arts
