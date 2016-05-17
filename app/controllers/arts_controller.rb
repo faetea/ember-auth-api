@@ -22,10 +22,8 @@ class ArtsController < ProtectedController
   def update
     if current_user.id == @author
 
-      if @art.update_attribute(:title, art_params[:title]) &&
-         @art.update_attribute(:caption, art_params[:caption])
-      # && @art.update_attribute(:image, art_params[:image])
-
+      if @art.update_attributes(:title => art_params[:title], :caption => art_params[:caption])
+        #  @art.update_attribute(:image, art_params[:image])
         render json: @art, status: :ok
       else
         render json: @art.errors, status: :unprocessable_entity
