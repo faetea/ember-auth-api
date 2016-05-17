@@ -1,12 +1,11 @@
 class ArtsController < ProtectedController
+  before_action :set_author, only: [:create, :update]
   before_action :set_art, only: [:show, :update, :destroy]
   skip_before_action :authenticate, only: [:index, :show] # read only
 
   # POST /arts
   def create
-    current_collection = Collection.find(art_params[:collection_id])
-    author = current_collection.user_id
-    if current_user.id == author
+    if current_user.id == @author
       new_art = Art.new(art_params)
 
       if new_art.save
@@ -21,11 +20,12 @@ class ArtsController < ProtectedController
 
   # PATCH/PUT /arts/1
   def update
-    current_collection = Collection.find(art_params[:collection_id])
-    author = current_collection.user_id
-    if current_user.id == author
+    if current_user.id == @author
 
-      if @art.update(art_params)
+      if @art.update_attribute(:title, art_params[:title]) &&
+         @art.update_attribute(:caption, art_params[:caption])
+      # && @art.update_attribute(:image, art_params[:image])
+
         render json: @art, status: :ok
       else
         render json: @art.errors, status: :unprocessable_entity
@@ -58,9 +58,14 @@ class ArtsController < ProtectedController
       @art = Art.find(params[:id])
     end
 
+    def set_author
+      current_collection = Collection.find(art_params[:collection_id])
+      @author = current_collection.user_id
+    end
+
     def art_params
       params.require(:art).permit(:title, :caption, :image, :collection_id)
     end
 
-    private :set_art, :art_params
+    private :set_art, :set_author, :art_params
 end
