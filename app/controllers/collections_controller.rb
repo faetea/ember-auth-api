@@ -18,11 +18,13 @@ class CollectionsController < ProtectedController
     end
   end
 
-  # PATCH /collections/:id
+  # PUT/PATCH /collections/:id
   def update
     author = @collection.user_id
     if current_user.id == author
-      if @collection.update(collection_params)
+
+      if @collection.update_attributes(:name => collection_params[:name], :desc => collection_params[:desc])
+        #  @collection.update_attribute(:cover, collection_params[:cover])
         render json: @collection, status: :ok
       else
         render json: @collection.errors, status: :unprocessable_entity
