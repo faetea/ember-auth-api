@@ -45,7 +45,9 @@ class ArtsController < ProtectedController
 
   # GET /arts
   def index
-    render json: Art.all
+    sortedArts = Art.order(updated_at: :desc)
+    # => SELECT "arts".* FROM "arts" ORDER BY "arts"."updated_at" DESC
+    render json: sortedArts
   end
 
   # GET /arts/:id

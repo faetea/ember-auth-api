@@ -54,7 +54,9 @@ class CollectionsController < ProtectedController
   # GET /collections
   # Browse everyone's collections
   def index
-    render json: Collection.all
+    sortedCollections = Collection.order(updated_at: :desc)
+    # => SELECT "collections".* FROM "collections" ORDER BY "collections"."updated_at" DESC
+    render json: sortedCollections
   end
 
   # GET /collections/:id
